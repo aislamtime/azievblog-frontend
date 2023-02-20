@@ -9,7 +9,7 @@ import { TagsBlock } from '../components/TagsBlock'
 import { CommentsBlock } from '../components/CommentsBlock'
 
 import { postsSelector } from '../redux/slices/posts/selectors'
-import { fetchPosts } from '../redux/slices/posts/asyncActions'
+import { fetchPosts, fetchTags } from '../redux/slices/posts/asyncActions'
 
 export const Home = () => {
   const { posts, tags } = useSelector(postsSelector)
@@ -19,6 +19,7 @@ export const Home = () => {
 
   React.useEffect(async () => {
     dispatch(fetchPosts())
+    dispatch(fetchTags())
   }, [])
 
   //console.log(posts.items.reverse())
@@ -54,7 +55,7 @@ export const Home = () => {
           )}
         </Grid>
         <Grid xs={4} item>
-          <TagsBlock items={['react', 'typescript', 'заметки']} isLoading={false} />
+          <TagsBlock items={tags.items} isLoading={false} />
           <CommentsBlock
             items={[
               {

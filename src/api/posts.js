@@ -13,4 +13,7 @@ export const postsAPI = {
   update(_id, data) {
     return axios.patch(`/posts/${_id}`, { ...data })
   },
+  getNewTags() {
+    return axios.get('/tags')
+  },
 }
