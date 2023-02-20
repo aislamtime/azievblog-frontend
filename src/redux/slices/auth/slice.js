@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {}
 const authSlice = createSlice({
-  namge: 'auth',
+  name: 'auth',
   initialState,
   reducers: {
     register(state, action) {},
