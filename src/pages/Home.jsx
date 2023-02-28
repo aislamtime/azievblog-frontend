@@ -16,13 +16,12 @@ export const Home = () => {
   const dispatch = useDispatch()
 
   const postsIsLoading = posts.status === 'loading'
+  const tagsIsLoading = tags.status === 'loading'
 
   React.useEffect(async () => {
     dispatch(fetchPosts())
     dispatch(fetchTags())
   }, [])
-
-  //console.log(posts.items.reverse())
 
   return (
     <>
@@ -41,10 +40,7 @@ export const Home = () => {
                 id={item._id}
                 title={item.title}
                 imageUrl={item.imageUrl}
-                user={{
-                  avatarUrl: item.user.avatarUrl,
-                  fullName: item.user.fullName,
-                }}
+                user={item.user}
                 createdAt={'12 июня 2022 г.'}
                 viewsCount={item.viewsCount}
                 commentsCount={3}
@@ -55,7 +51,7 @@ export const Home = () => {
           )}
         </Grid>
         <Grid xs={4} item>
-          <TagsBlock items={tags.items} isLoading={false} />
+          <TagsBlock items={tags.items} isLoading={tagsIsLoading} />
           <CommentsBlock
             items={[
               {
