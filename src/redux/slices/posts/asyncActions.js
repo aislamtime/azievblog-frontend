@@ -10,3 +10,8 @@ export const fetchTags = createAsyncThunk('posts/fetchTags', async () => {
   const { data } = await postsAPI.getNewTags()
   return data
 })
+
+export const fetchOnePost = createAsyncThunk('posts/fetchOnePost', async (id) => {
+  const { data } = await postsAPI.getOnePost(id)
+  return data
+})

@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchPosts, fetchTags } from './asyncActions'
+import { fetchOnePost, fetchPosts, fetchTags } from './asyncActions'
 
 const initialState = {
+  fullPost: {
+    post: {},
+    status: 'loading',
+  },
   posts: {
     items: [],
     status: 'loading',
@@ -44,6 +48,18 @@ const postsSlice = createSlice({
     builder.addCase(fetchTags.rejected, (state) => {
       state.tags.items = []
       state.tags.status = 'error'
+    })
+    builder.addCase(fetchOnePost.pending, (state) => {
+      state.fullPost.post = {}
+      state.fullPost.status = 'loading'
+    })
+    builder.addCase(fetchOnePost.fulfilled, (state, action) => {
+      state.fullPost.post = action.payload
+      state.fullPost.status = 'success'
+    })
+    builder.addCase(fetchOnePost.rejected, (state) => {
+      state.fullPost.post = {}
+      state.fullPost.status = 'error'
     })
   },
 })

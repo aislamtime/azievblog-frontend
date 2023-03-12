@@ -4,46 +4,54 @@ import { Post } from '../components/Post'
 import { Index } from '../components/AddComment'
 import { CommentsBlock } from '../components/CommentsBlock'
 import { useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { postsSelector } from '../redux/slices/posts/selectors'
 import { postsAPI } from '../api/posts'
+import { fetchOnePost } from '../redux/slices/posts/asyncActions'
 
 export const FullPost = () => {
   const { id } = useParams()
-  const [post, setPost] = React.useState({})
-  const [isLoading, setIsLoading] = React.useState(true)
+  const dispatch = useDispatch()
+  const { fullPost } = useSelector(postsSelector)
+  //const [post, setPost] = React.useState({})
+  //const [isLoading, setIsLoading] = React.useState(true)
 
   React.useEffect(() => {
-    postsAPI
-      .getOnePost(id)
-      .then((data) => {
-        setPost(data)
-        setIsLoading(false)
-      })
-      .catch((err) => {
-        console.warn(err)
-        alert('Возникла ошибка при получении поста..')
-      })
+    dispatch(fetchOnePost(id))
+
+    //postsAPI
+    //  .getOnePost(id)
+    //  .then((data) => {
+    //    setPost(data)
+    //    setIsLoading(false)
+    //    console.log('Все прошло успешно', post, isLoading)
+    //  })
+    //  .catch((err) => {
+    //    console.warn(err)
+    //    alert('Возникла ошибка при получении поста..')
+    //  })
   }, [])
+
+  console.log(fullPost)
 
   return (
     <>
-      {isLoading ? (
-        <Post isLoading={isLoading} />
+      {fullPost.status === 'loading' ? (
+        <Post isLoading={fullPost.status === 'loading'} />
       ) : (
         <>
           <Post
-            id={post._id}
-            title={post.title}
-            imageUrl={post.imageUrl}
+            id={fullPost._id}
+            title={fullPost.title}
+            imageUrl={fullPost.imageUrl}
             //imageUrl='https://res.cloudinary.com/practicaldev/image/fetch/s--UnAfrEG8--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icohm5g0axh9wjmu4oc3.png'
-            user={post.user}
+            user={fullPost.user}
             createdAt={'12 июня 2022 г.'}
-            viewsCount={post.viewsCount}
+            viewsCount={fullPost.viewsCount}
             commentsCount={3}
-            tags={post.tags}
+            tags={fullPost.tags}
             isFullPost>
-            <p>{post.text}</p>
+            <p>{fullPost.text}</p>
           </Post>
           <CommentsBlock
             items={[
